@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">I am call</string>
+
+    <string name="default_notification_channel_id">messages</string>
+    <string name="alphabet">A</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search Contact</string>
+    <string name="follow">150 \n Followers</string>
+    <string name="cities">19 \n Cities</string>
+    <string name="posts">50 \n Posts</string>
+    <string name="call_me">Call Me</string>
+    <string name="x">X</string>
+</resources>
