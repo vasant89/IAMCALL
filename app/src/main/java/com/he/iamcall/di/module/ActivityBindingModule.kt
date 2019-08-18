@@ -5,6 +5,8 @@ import com.he.iamcall.SplashActivity
 import com.he.iamcall.main.MainActivity
 import com.he.iamcall.di.scope.ActivityScoped
 import com.he.iamcall.main.MainModule
+import com.he.iamcall.main.addeditcontact.AddEditContactActivity
+import com.he.iamcall.main.addeditcontact.AddEditContactModule
 import com.he.iamcall.main.contactlist.ContactListActivity
 import com.he.iamcall.main.contactlist.ContactListModule
 import dagger.Module
@@ -13,6 +15,10 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class ActivityBindingModule {
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [AddEditContactModule::class])
+    internal abstract fun addEditContactActivity(): AddEditContactActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [ContactListModule::class])

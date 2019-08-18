@@ -7,7 +7,7 @@ import com.he.iamcall.ViewModelFactory
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 import com.he.iamcall.extenstions.*
-import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.content_contact_list.*
 
 
 class ContactListActivity : DaggerAppCompatActivity() {
@@ -21,7 +21,7 @@ class ContactListActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_contact_list)
         setupActionBar(R.id.toolbar) {
             setDisplayHomeAsUpEnabled(true)
         }

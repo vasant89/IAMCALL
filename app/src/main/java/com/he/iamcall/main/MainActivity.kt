@@ -2,6 +2,7 @@ package com.he.iamcall.main
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.SearchView
@@ -15,6 +16,7 @@ import javax.inject.Inject
 import android.os.Build
 import android.view.View
 import com.he.iamcall.extenstions.*
+import com.he.iamcall.main.addeditcontact.AddEditContactActivity
 import kotlinx.android.synthetic.main.content_main.*
 
 
@@ -93,6 +95,11 @@ class MainActivity : DaggerAppCompatActivity() {
         when (item?.itemId) {
             R.id.action_search -> {
                 return true
+            }
+            R.id.action_add -> {
+                Intent(this@MainActivity,AddEditContactActivity::class.java).run {
+                    startActivity(this)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

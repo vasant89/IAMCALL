@@ -93,6 +93,10 @@
             android:name=".main.contactlist.ContactListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".main.addeditcontact.AddEditContactActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
 
     </application>

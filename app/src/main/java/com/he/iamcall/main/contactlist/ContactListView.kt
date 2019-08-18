@@ -1,6 +1,7 @@
 package com.he.iamcall.main.contactlist
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
@@ -15,6 +16,7 @@ import com.he.iamcall.dialog.CallDialogFragment
 import com.he.iamcall.extenstions.showCallDialog
 import com.he.iamcall.extenstions.showSnackBarLong
 import com.he.iamcall.main.MainView.Companion.KEY_ALPHABET
+import com.he.iamcall.main.addeditcontact.AddEditContactActivity
 import com.kaopiz.kprogresshud.KProgressHUD
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -38,9 +40,14 @@ constructor() : DaggerFragment() {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = ContactAdapter { _, contact ->
+            adapter = ContactAdapter({ _, contact ->
                 showCallDialog(contact)
-            }
+            }, { _, contact ->
+                Intent(context,AddEditContactActivity::class.java).run {
+                    putExtra(KEY_CONTACT,contact)
+                    startActivity(this)
+                }
+            })
         }
 
         return mBinding.root
@@ -83,5 +90,11 @@ constructor() : DaggerFragment() {
 
             }
         }
+    }
+
+    companion object{
+        private val TAG = ContactListView::class.java.simpleName
+        const val KEY_CONTACT= "contact"
+
     }
 }

@@ -11,26 +11,31 @@ interface DataSource {
 
     fun getContactsByQuery(query: String?): LiveData<List<Contact>>
 
-    suspend fun insertContact(contact: Contact)
+    suspend fun insertContact(contact: Contact,callback: AddContactCallback?)
 
     suspend fun insertContacts(contacts: List<Contact>)
 
     suspend fun updateContact(contact: Contact?, callback: ContactAddUpdateCallback?)
 
-    suspend fun deleteContact(contact: Contact)
+    suspend fun deleteContact(contact: Contact,callback: DeleteContactCallback?)
 
     suspend fun deleteContacts()
+
 
     interface ContactAddUpdateCallback {
         fun onContactAdded(contact: Contact)
         fun onContactUpdated(contact: Contact)
         fun onContactDeleted(contact: Contact)
+        fun onContactUpdatedError()
     }
 
-    interface ContactCallback {
-        fun onContactsFound(contacts: List<Contact>)
-        fun onContactsNotFound(exception: RemoteDataNotFoundException)
+    interface AddContactCallback{
+        fun onAddContactSuccessfully()
+        fun onAddContactError()
     }
 
-    suspend fun refreshContact(callback: ContactCallback)
+    interface DeleteContactCallback{
+        fun onDeleteContactSuccessfully()
+        fun onDeleteContactError()
+    }
 }

@@ -34,30 +34,34 @@ constructor(
         return localDataSource.getContactsByQuery(query)
     }
 
-    override suspend fun insertContact(contact: Contact) {
-        remoteDataSource.insertContact(contact)
+    override suspend fun insertContact(contact: Contact,callback: DataSource.AddContactCallback?) {
+        remoteDataSource.insertContact(contact,callback)
     }
 
     override suspend fun insertContacts(contacts: List<Contact>) {
         localDataSource.insertContacts(contacts)
     }
 
-    override suspend fun deleteContact(contact: Contact) {
-        localDataSource.deleteContact(contact)
-    }
 
     override suspend fun updateContact(contact: Contact?, callback: DataSource.ContactAddUpdateCallback?) {
         return remoteDataSource.updateContact(contact, object : DataSource.ContactAddUpdateCallback {
             override fun onContactAdded(contact: Contact) = launchSilent {
-                localDataSource.insertContact(contact)
+                localDataSource.insertContact(contact,null)
+                callback?.onContactAdded(contact)
             }
 
             override fun onContactUpdated(contact: Contact) = launchSilent {
                 localDataSource.updateContact(contact, callback)
+                callback?.onContactUpdated(contact)
             }
 
             override fun onContactDeleted(contact: Contact) = launchSilent {
-                localDataSource.deleteContact(contact)
+                localDataSource.deleteContact(contact,null)
+                callback?.onContactDeleted(contact)
+            }
+
+            override fun onContactUpdatedError() {
+                callback?.onContactUpdatedError()
             }
         })
     }
@@ -66,20 +70,17 @@ constructor(
         localDataSource.deleteContacts()
     }
 
-    override suspend fun refreshContact(callback: DataSource.ContactCallback) {
-        remoteDataSource.refreshContact(object : DataSource.ContactCallback {
-            override fun onContactsFound(contacts: List<Contact>) = launchSilent {
-                contacts.forEach {
-                    localDataSource.insertContact(it)
-                }
-                callback.onContactsFound(contacts)
+    override suspend fun deleteContact(contact: Contact, callback: DataSource.DeleteContactCallback?) {
+        remoteDataSource.deleteContact(contact,object :DataSource.DeleteContactCallback{
+            override fun onDeleteContactSuccessfully()= launchSilent {
+                localDataSource.deleteContact(contact,null)
+                callback?.onDeleteContactSuccessfully()
             }
 
-            override fun onContactsNotFound(exception: RemoteDataNotFoundException) {
-                callback.onContactsNotFound(exception)
+            override fun onDeleteContactError() {
+               callback?.onDeleteContactError()
             }
 
         })
     }
-
 }

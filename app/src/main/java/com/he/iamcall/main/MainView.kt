@@ -17,7 +17,9 @@ import com.he.iamcall.databinding.MainViewBinding
 import com.he.iamcall.di.scope.ActivityScoped
 import com.he.iamcall.extenstions.showCallDialog
 import com.he.iamcall.extenstions.showSnackBarLong
+import com.he.iamcall.main.addeditcontact.AddEditContactActivity
 import com.he.iamcall.main.contactlist.ContactListActivity
+import com.he.iamcall.main.contactlist.ContactListView.Companion.KEY_CONTACT
 import com.kaopiz.kprogresshud.KProgressHUD
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -42,9 +44,14 @@ constructor() : DaggerFragment() {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator()
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = ContactAdapter { _, contact ->
+            adapter = ContactAdapter({ _, contact ->
                 showCallDialog(contact)
-            }
+            }, { _, contact ->
+                Intent(context, AddEditContactActivity::class.java).run {
+                    putExtra(KEY_CONTACT, contact)
+                    startActivity(this)
+                }
+            })
         }
 
         mBinding.recyclerView.apply {
@@ -82,10 +89,10 @@ constructor() : DaggerFragment() {
             })
 
             repository.getContacts().observe(this@MainView, Observer { list ->
-                (mBinding.recyclerView.adapter as AlphabetAdapter).apply {
-                    if (list.isNullOrEmpty()) {
-                        refreshContact()
-                    } else {
+                list?.let {
+                    isDataLoading.value = list.isEmpty()
+                    (mBinding.recyclerView.adapter as AlphabetAdapter).apply {
+
                         contacts.clear()
                         contacts.addAll(list)
 

@@ -7,6 +7,7 @@ import com.squareup.picasso.Picasso
 import com.google.android.gms.common.api.GoogleApiClient
 import com.he.iamcall.data.source.Repository
 import com.he.iamcall.main.MainViewModel
+import com.he.iamcall.main.addeditcontact.AddEditContactViewModel
 import com.he.iamcall.main.contactlist.ContactListViewModel
 import com.he.iamcall.session.SessionManager
 
@@ -31,6 +32,8 @@ class ViewModelFactory(
                         MainViewModel(application, repository, sMg, imageHelper, uiContext)
                     isAssignableFrom(ContactListViewModel::class.java) ->
                         ContactListViewModel(application, repository, sMg, imageHelper, uiContext)
+                    isAssignableFrom(AddEditContactViewModel::class.java) ->
+                        AddEditContactViewModel(application, repository, sMg, imageHelper, uiContext)
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }

@@ -9,7 +9,7 @@ import com.he.iamcall.data.Contact
 import com.he.iamcall.databinding.RowContactBinding
 import com.he.iamcall.extenstions.varunTypeFace
 
-class ContactAdapter(val action: (index: Int, contact: Contact) -> Unit) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
+class ContactAdapter(val action: (index: Int, contact: Contact) -> Unit, val longPressAction: (index: Int, contact: Contact) -> Unit) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 
     val contacts: MutableList<Contact> = mutableListOf()
 
@@ -33,6 +33,10 @@ class ContactAdapter(val action: (index: Int, contact: Contact) -> Unit) : Recyc
                 tvName.typeface = ctx.varunTypeFace()
                 root.setOnClickListener {
                     action(index, item)
+                }
+                root.setOnLongClickListener {
+                    longPressAction(index,item)
+                    true
                 }
                 executePendingBindings()
             }

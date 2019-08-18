@@ -64,21 +64,6 @@ class MainViewModel(
     }
 
 
-    fun refreshContact() = launchSilent(uiContext) {
-
-        isDataLoading.value = true
-
-        repository.refreshContact(object : DataSource.ContactCallback {
-            override fun onContactsFound(contacts: List<Contact>) = launchSilent(uiContext) {
-                isDataLoading.value = false
-            }
-
-            override fun onContactsNotFound(exception: RemoteDataNotFoundException) = launchSilent(uiContext) {
-                isDataLoading.value = false
-                showSnackbarMessage(exception.message.toString())
-            }
-        })
-    }
 
 
     companion object {

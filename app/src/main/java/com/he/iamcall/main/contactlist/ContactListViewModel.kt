@@ -43,6 +43,6 @@ class ContactListViewModel(
 
 
     companion object {
-        private val TAG = ContactListView::class.java.simpleName
+        private val TAG = ContactListViewModel::class.java.simpleName
     }
 }

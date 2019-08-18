@@ -10,4 +10,15 @@
     <string name="posts">50 \n Posts</string>
     <string name="call_me">Call Me</string>
     <string name="x">X</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="first">First</string>
+    <string name="sno">Serial No</string>
+    <string name="name">name</string>
+    <string name="alpha">Alpha</string>
+    <string name="middle">Middle</string>
+    <string name="last">Last</string>
+    <string name="forth">Forth</string>
+    <string name="mobile">Mobile</string>
+    <string name="action_done">Done</string>
 </resources>

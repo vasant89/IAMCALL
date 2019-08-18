@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 @Entity
-data class Contact(
-        @SerializedName("SNO")
+data class Contact @JvmOverloads constructor(
+        @SerializedName("FID")
         @Expose
-        var sNO: Int? = 0,
+        var fId: String?="",
         @SerializedName("PART")
         @Expose
         var part: String? = "",

@@ -41,63 +41,108 @@ constructor(private val retrofitServiceFactory: RetrofitServiceFactory) : DataSo
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun insertContact(contact: Contact) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun insertContact(contact: Contact, callback: DataSource.AddContactCallback?) {
+        fireStoreDb
+                .collection("PhoneBook")
+                .document("Contact")
+                .collection("contacts")
+                .add(contact)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        callback?.onAddContactSuccessfully()
+                    } else {
+                        callback?.onAddContactError()
+                    }
+
+                }
+                .addOnFailureListener {
+                    val message = it.message
+                    Log.e(TAG, message)
+                    callback?.onAddContactError()
+                }
     }
 
     override suspend fun insertContacts(contacts: List<Contact>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun deleteContact(contact: Contact) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override suspend fun updateContact(contact: Contact?, callback: DataSource.ContactAddUpdateCallback?) {
-        fireStoreDb
-                .collection("PhoneBook")
-                .document("Contact")
-                .collection("contacts")
-                .addSnapshotListener { snapshot, firebaseFirestoreException ->
-                    if (snapshot != null) {
-                        for (documentChange in snapshot.documentChanges) {
-                            when (documentChange.type) {
-                                DocumentChange.Type.ADDED -> {
-                                    callback?.onContactAdded(documentChange.document.toObject(Contact::class.java))
-                                }
-                                DocumentChange.Type.MODIFIED -> {
-                                    callback?.onContactUpdated(documentChange.document.toObject(Contact::class.java))
-                                }
-                                DocumentChange.Type.REMOVED -> {
-                                    callback?.onContactDeleted(documentChange.document.toObject(Contact::class.java))
+        if (contact != null) {
+            fireStoreDb
+                    .collection("PhoneBook")
+                    .document("Contact")
+                    .collection("contacts")
+                    .document(contact.fId!!)
+                    .set(contact)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            callback?.onContactUpdated(contact)
+                        } else {
+                            callback?.onContactUpdatedError()
+                        }
+
+                    }
+                    .addOnFailureListener {
+                        val message = it.message
+                        Log.e(TAG, message)
+                        callback?.onContactUpdatedError()
+                    }
+        } else {
+            fireStoreDb
+                    .collection("PhoneBook")
+                    .document("Contact")
+                    .collection("contacts")
+                    .addSnapshotListener { snapshot, firebaseFirestoreException ->
+                        if (snapshot != null) {
+                            for (documentChange in snapshot.documentChanges) {
+                                val contact: Contact = documentChange.document.toObject(Contact::class.java)
+                                contact.fId = documentChange.document.id
+                                when (documentChange.type) {
+                                    DocumentChange.Type.ADDED -> {
+                                        callback?.onContactAdded(contact)
+                                    }
+                                    DocumentChange.Type.MODIFIED -> {
+                                        callback?.onContactUpdated(contact)
+                                    }
+                                    DocumentChange.Type.REMOVED -> {
+                                        callback?.onContactDeleted(contact)
+                                    }
                                 }
                             }
+                        } else {
+                            callback?.onContactUpdatedError()
+                            Log.e(TAG, "Log Error Firebase Firestore Exception ${firebaseFirestoreException?.message}")
                         }
-                    }else{
-                        Log.e(TAG,"Log Error Firebase Firestore Exception ${firebaseFirestoreException?.message}")
                     }
-                }
+
+        }
     }
 
-    override suspend fun deleteContacts() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override suspend fun refreshContact(callback: DataSource.ContactCallback) {
+    override suspend fun deleteContact(contact: Contact, callback: DataSource.DeleteContactCallback?) {
         fireStoreDb
                 .collection("PhoneBook")
                 .document("Contact")
                 .collection("contacts")
-                .get()
-                .addOnSuccessListener {
-                    if (!it.isEmpty) {
-                        callback.onContactsFound(it.toObjects(Contact::class.java))
+                .document(contact.fId!!)
+                .delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        callback?.onDeleteContactSuccessfully()
                     } else {
-                        callback.onContactsNotFound(RemoteDataNotFoundException())
-
+                        callback?.onDeleteContactError()
                     }
-                }.addOnFailureListener {
-                    callback.onContactsNotFound(RemoteDataNotFoundException())
+
                 }
+                .addOnFailureListener {
+                    val message = it.message
+                    Log.e(TAG, message)
+                    callback?.onDeleteContactError()
+                }
+
     }
+    override suspend fun deleteContacts() {
+
+    }
+
 }

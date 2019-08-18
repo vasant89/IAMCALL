@@ -27,7 +27,7 @@ constructor(
         return contactDao.getContactsByQuery(query)
     }
 
-    override suspend fun insertContact(contact: Contact) {
+    override suspend fun insertContact(contact: Contact,callback: DataSource.AddContactCallback?) {
         withContext(appExecutors.ioContext) {
             contactDao.insertContact(contact)
         }
@@ -47,7 +47,7 @@ constructor(
         }
     }
 
-    override suspend fun deleteContact(contact: Contact) {
+    override suspend fun deleteContact(contact: Contact,callback: DataSource.DeleteContactCallback?) {
         withContext(appExecutors.ioContext) {
             contactDao.deleteContact(contact)
         }
@@ -59,7 +59,4 @@ constructor(
         }
     }
 
-    override suspend fun refreshContact(callback: DataSource.ContactCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }
