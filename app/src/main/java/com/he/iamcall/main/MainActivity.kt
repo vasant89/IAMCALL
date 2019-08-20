@@ -39,26 +39,26 @@ class MainActivity : DaggerAppCompatActivity() {
             title = getString(R.string.app_name)
         }
 
-        showBannerAd(adView)
+       // showBannerAd(adView)
 
         replaceFragmentInActivity(mainView, R.id.container)
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        adView?.resume()
-    }
-
-    override fun onPause() {
-        adView?.pause()
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        adView?.destroy()
-        super.onDestroy()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        adView?.resume()
+//    }
+//
+//    override fun onPause() {
+//        adView?.pause()
+//        super.onPause()
+//    }
+//
+//    override fun onDestroy() {
+//        adView?.destroy()
+//        super.onDestroy()
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)

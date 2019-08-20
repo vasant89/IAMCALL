@@ -26,8 +26,8 @@ class ContactListActivity : DaggerAppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        showBannerAd(adView)
-        showFullScreenAd()
+//        showBannerAd(adView)
+//        showFullScreenAd()
 
         contactListView.arguments = intent.extras
 
@@ -35,20 +35,20 @@ class ContactListActivity : DaggerAppCompatActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        adView?.resume()
-    }
-
-    override fun onPause() {
-        adView?.pause()
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        adView?.destroy()
-        super.onDestroy()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        adView?.resume()
+//    }
+//
+//    override fun onPause() {
+//        adView?.pause()
+//        super.onPause()
+//    }
+//
+//    override fun onDestroy() {
+//        adView?.destroy()
+//        super.onDestroy()
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {

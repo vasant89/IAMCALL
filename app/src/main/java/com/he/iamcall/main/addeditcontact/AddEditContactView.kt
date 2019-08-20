@@ -40,9 +40,9 @@ constructor() : DaggerFragment() {
             this.viewModel = (activity as AddEditContactActivity).obtainViewModel()
         }
 
-        context?.apply {
-            mBinding.tvName.typeface = varunTypeFace()
-        }
+//        context?.apply {
+//            mBinding.tvName.typeface = varunTypeFace()
+//        }
 
         setHasOptionsMenu(true)
         return mBinding.root
